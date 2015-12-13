@@ -113,22 +113,5 @@ class Regex
         
         return str;
     }
-    
-    public static void main(String[] args)
-    {
-        initial2();
-
-    }
-    
-    public static void initial2()
-    {
-        String pattenString = "\\w+";
-        String matcherString = "hello world! this is kitty!";
-        
-        Regex aRegex = new Regex(pattenString, matcherString);
-        aRegex.setFindMark();
-        
-        System.out.println(aRegex);
-    }
 }
 
