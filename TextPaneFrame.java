@@ -35,6 +35,7 @@ class TextPaneFrame extends JFrame
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         matchPane.addKeyListener(new myKeyListener());
+        patternPane.addKeyListener(new myKeyListener());
 
         JSplitPane SplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 textAndLabelPanel(REGULAR_EXPRESSION_LABEL, patternPane),
@@ -104,6 +105,7 @@ class TextPaneFrame extends JFrame
 
             matchPane.setStyledDocument(aRegex.getStyledDocument());
             matchPane.setCaretPosition(matchPane.getText().length());
+            patternPane.setCaretPosition(patternPane.getText().length());
         }
     }
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -46,15 +47,23 @@ class Regex
      */
     private void setFindMark()
     {
-        Pattern aPattern = Pattern.compile(pattern);
-        Matcher aMatcher = aPattern.matcher(matcher);
-                
-        while(aMatcher.find())
+        try
         {
-            int start = aMatcher.start();
-            int end  = aMatcher.end();
+            Pattern aPattern = Pattern.compile(pattern);
+            Matcher aMatcher = aPattern.matcher(matcher);
             
-            findMarks.add(new FindMark(start,end));
+            while(aMatcher.find())
+            {
+                int start = aMatcher.start();
+                int end  = aMatcher.end();
+                
+                findMarks.add(new FindMark(start,end));
+            }
+        }
+        catch (PatternSyntaxException e)
+        {
+            // TODO: handle exception
+            e.printStackTrace();
         }
     }
     
