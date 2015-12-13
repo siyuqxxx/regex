@@ -1,11 +1,14 @@
 package com.regex;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,11 +18,13 @@ import javax.swing.JTextPane;
 
 class TextPaneFrame extends JFrame
 {
-    private static final int DEFAULT_WIDTH = 300;
-    private static final int DEFAULT_HEIGHT = 200;
+    private static final long serialVersionUID = 1L;
     
-    private static final Color ODD_COLOR = new Color(255,240,0);
-    private static final Color EVEN_COLOR = new Color(128,192,255);   
+    private static final int DEFAULT_WIDTH = 400;
+    private static final int DEFAULT_HEIGHT = 300;
+    
+    private static final String REGULAR_EXPRESSION_LABEL = "正则表达式：";
+    private static final String TEST_STRING_LABEL = "测试字符串：";
     
     private JTextPane matchPane = new JTextPane();
     private JTextPane patternPane = new JTextPane(); 
@@ -28,39 +33,53 @@ class TextPaneFrame extends JFrame
     {
         setTitle("TextPaneTest");
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        
+
+        matchPane.addKeyListener(new myKeyListener());
 
         JSplitPane SplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                RegularExpressionPanel(), TestStringPanel());
+                textAndLabelPanel(REGULAR_EXPRESSION_LABEL, patternPane),
+                textAndLabelPanel(TEST_STRING_LABEL, matchPane));
 
         add(SplitPane,BorderLayout.CENTER);
     }
     
-    private JPanel RegularExpressionPanel()
+    /**
+     * 采用 GridBagLayout 布局的带标签面板
+     * 面板采用上下布局
+     * 
+     * @param name 标签名称
+     * @param component 交互控件
+     * @return
+     */
+    private JPanel textAndLabelPanel(String name, JComponent component)
     {
-        JPanel regularExpressionPanel = new JPanel();
-        JLabel egularExpressionLabel = new JLabel("正则表达式：");
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(name);
+        JScrollPane scrollPane = new JScrollPane(component);
 
-        regularExpressionPanel.setLayout(new GridLayout(2,1));
-        regularExpressionPanel.add(egularExpressionLabel);
-        regularExpressionPanel.add(new JScrollPane(patternPane));
-        
-        return regularExpressionPanel;
+        GridBagLayout gridBag = new GridBagLayout();
+        GridBagConstraints c = new GridBagConstraints();
+        panel.setLayout(gridBag);
+
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 0, 6, 0);
+        gridBag.setConstraints(label, c);
+
+        c.weighty = 1.0;
+        c.insets = new Insets(0, 0, 0, 0);
+        gridBag.setConstraints(scrollPane, c);
+
+        panel.add(label);
+        panel.add(scrollPane);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+
+        return panel;
     }
     
-    private JPanel TestStringPanel()
-    {
-        matchPane.addKeyListener(new myKeyListener());
-        
-        JPanel testStringPanel = new JPanel();
-        JLabel testStringLabel = new JLabel("测试字符串：");
-
-        testStringPanel.setLayout(new GridLayout(2,1));
-        testStringPanel.add(testStringLabel);
-        testStringPanel.add(new JScrollPane(matchPane));
-        
-        return testStringPanel;
-    }
     class myKeyListener implements KeyListener
     {
         @Override
