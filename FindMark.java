@@ -28,7 +28,7 @@ class FindMark
     
     public int length()
     {
-        return paEnd - paEnd;
+        return paEnd - paStart;
     }
     
     public String toString()
