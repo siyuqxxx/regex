@@ -2,18 +2,16 @@ package com.regex;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 class TextPaneFrame extends JFrame
 {
@@ -31,14 +29,38 @@ class TextPaneFrame extends JFrame
         setTitle("TextPaneTest");
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         
-        matchPane.addKeyListener(new myKeyListener());
 
         JSplitPane SplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-                new JScrollPane(patternPane), new JScrollPane(matchPane));
+                RegularExpressionPanel(), TestStringPanel());
 
         add(SplitPane,BorderLayout.CENTER);
     }
     
+    private JPanel RegularExpressionPanel()
+    {
+        JPanel regularExpressionPanel = new JPanel();
+        JLabel egularExpressionLabel = new JLabel("正则表达式：");
+
+        regularExpressionPanel.setLayout(new GridLayout(2,1));
+        regularExpressionPanel.add(egularExpressionLabel);
+        regularExpressionPanel.add(new JScrollPane(patternPane));
+        
+        return regularExpressionPanel;
+    }
+    
+    private JPanel TestStringPanel()
+    {
+        matchPane.addKeyListener(new myKeyListener());
+        
+        JPanel testStringPanel = new JPanel();
+        JLabel testStringLabel = new JLabel("测试字符串：");
+
+        testStringPanel.setLayout(new GridLayout(2,1));
+        testStringPanel.add(testStringLabel);
+        testStringPanel.add(new JScrollPane(matchPane));
+        
+        return testStringPanel;
+    }
     class myKeyListener implements KeyListener
     {
         @Override
